@@ -11,5 +11,11 @@ public class Main {
         System.out.println(diagnostics.getGamma());
         System.out.println(diagnostics.getEpsilon());
         System.out.println(diagnostics.getPowerConsumption());
+
+        diagnostics.calculateOAndCOrates();
+        System.out.println(diagnostics.getOxygenGeneratorRating());
+        System.out.println(diagnostics.getCO2ScrubberRating());
+        System.out.println(diagnostics.getLifeSupportRating());
+
     }
 }
