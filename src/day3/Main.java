@@ -8,14 +8,14 @@ public class Main {
         System.out.println(diagnostics.getDiagnosticList().toString());
 
         diagnostics.calculateGammaAndEpsilonRates();
-        System.out.println(diagnostics.getGamma());
-        System.out.println(diagnostics.getEpsilon());
-        System.out.println(diagnostics.getPowerConsumption());
+        System.out.println("gamma: " + diagnostics.getGamma());
+        System.out.println("epsilon: " + diagnostics.getEpsilon());
+        System.out.println("power consumption: " + diagnostics.getPowerConsumption() + "\n");
 
-        diagnostics.calculateOAndCOrates();
-        System.out.println(diagnostics.getOxygenGeneratorRating());
-        System.out.println(diagnostics.getCO2ScrubberRating());
-        System.out.println(diagnostics.getLifeSupportRating());
+        diagnostics.calculateLifeSupport();
+        System.out.println("Oxygen generator rating: " + diagnostics.getOxygenGeneratorRating());
+        System.out.println("CO2 scrubber rating: " + diagnostics.getCO2ScrubberRating());
+        System.out.println("Life support rating: " + diagnostics.getLifeSupportRating());
 
     }
 }

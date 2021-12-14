@@ -82,36 +82,66 @@ public class Diagnostics {
 
         for (String line : diagnosticList) {
             for (int i = 0; i < bites; i++) {
-                //ones[i] += Integer.parseInt(Character.toString(line.charAt(i)));
                 if (line.charAt(i) == '1'){
                     ones[i] ++;
                 }
             }
         }
-
         return ones;
     }
 
-    // part 2
-    public void calculateOAndCOrates(){
-        ArrayList<String> oxygen = (ArrayList<String>) diagnosticList.clone();
-        ArrayList<String> carbonDioxide = (ArrayList<String>) diagnosticList.clone();
+    //PART 2
+    public void calculateLifeSupport(){
+        ArrayList<String> oxygenList = (ArrayList<String>) diagnosticList;
+        ArrayList<String> carbonList = (ArrayList<String>) diagnosticList;
 
-        // goes through every bit
-        for (int i = 0; i < diagnosticList.get(0).length(); i++) {
-            int ones = 0;
-            int zeroes = 0;
+        oxygenGeneratorRatingBinary = findLifeSupportElementRating(oxygenList, '1');
+        CO2ScrubberRatingBinary = findLifeSupportElementRating(carbonList, '0');
 
-            // goes through every line, counting the ones and calculating the zeroes
-            for (int j = 0; j < diagnosticList.size(); j++) {
-                if (diagnosticList.get(j).charAt(i) == '1'){
-                    ones++;
+
+    }
+
+    private String findLifeSupportElementRating(ArrayList<String> list, char bitToKeepIfEqual){
+        //loopa genom bitpositionerna (horisontellt)
+
+        while (list.size() > 0){
+            for (int i = 0; i < list.get(0).length(); i++) {
+                //loopa genom listan (vertikalt)
+                int ones = 0;
+                for (String value : list) {
+                    if (value.charAt(i) == '1') {
+                        ones++;
+                    }
+                }
+
+                // calculate which bit to keep in this position
+                char bitToKeep = bitToKeep(ones, list.size() - ones, bitToKeepIfEqual);
+
+                //remove the values with the wrong bit in this position
+                list = new ArrayList<>(removeWrongBitValues(i, bitToKeep, list));
+                if (list.size() == 1){
+                    break;
                 }
             }
+        }
+        return list.get(0);
+    }
 
-            // TODO: 2021-12-13 calculate value to be kept for both lists (they're not each others pure inverse!)
-            // TODO: 2021-12-13 loop through the list once for each copy, maybe that's a helper method?
+    private ArrayList<String> removeWrongBitValues(int bitIndex, char bitToKeep, ArrayList<String> list){
+        for (int i = 0; i < list.size(); i++){
+            if (list.get(i).charAt(bitIndex) != bitToKeep){
+                list.remove(i);
+                i--; //counting up then down is ugly but i'm tired
+            }
+        }
+        return list;
+    }
 
+    private char bitToKeep(int ones, int zeroes, char bitToKeepIfEqual){
+        if (ones >= zeroes){
+            return bitToKeepIfEqual;
+        } else {
+            return bitToKeepIfEqual == '0' ? '1' : '0';
         }
     }
 }
