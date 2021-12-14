@@ -102,39 +102,41 @@ public class Diagnostics {
     }
 
     private String findLifeSupportElementRating(ArrayList<String> list, char bitToKeepIfEqual){
+
         //loopa genom bitpositionerna (horisontellt)
-
-        while (list.size() > 0){
-            for (int i = 0; i < list.get(0).length(); i++) {
-                //loopa genom listan (vertikalt)
-                int ones = 0;
-                for (String value : list) {
-                    if (value.charAt(i) == '1') {
-                        ones++;
-                    }
+        for (int i = 0; i < list.get(0).length(); i++) {
+            //loopa genom listan (vertikalt)
+            int ones = 0;
+            for (String value : list) {
+                if (value.charAt(i) == '1') {
+                    ones++;
                 }
+            }
 
-                // calculate which bit to keep in this position
-                char bitToKeep = bitToKeep(ones, list.size() - ones, bitToKeepIfEqual);
+            // calculate which bit to keep in this position
+            char bitToKeep = bitToKeep(ones, list.size() - ones, bitToKeepIfEqual);
 
-                //remove the values with the wrong bit in this position
-                list = new ArrayList<>(removeWrongBitValues(i, bitToKeep, list));
-                if (list.size() == 1){
-                    break;
-                }
+            //remove the values with the wrong bit in this position
+            list = removeWrongBitValues(i, bitToKeep, list);
+            if (list.size() == 1){
+                break;
             }
         }
         return list.get(0);
     }
 
     private ArrayList<String> removeWrongBitValues(int bitIndex, char bitToKeep, ArrayList<String> list){
+        ArrayList<String> filteredList = new ArrayList<>();
+
         for (int i = 0; i < list.size(); i++){
-            if (list.get(i).charAt(bitIndex) != bitToKeep){
-                list.remove(i);
-                i--; //counting up then down is ugly but i'm tired
+            if (list.get(i).charAt(bitIndex) == bitToKeep){
+                filteredList.add(list.get(i));
             }
         }
-        return list;
+        return filteredList;
+
+        //partners smart solution that I didn't come up with:
+        //return (ArrayList<String>) list.stream().filter(str -> str.charAt(bitIndex) == bitToKeep).toList();
     }
 
     private char bitToKeep(int ones, int zeroes, char bitToKeepIfEqual){
